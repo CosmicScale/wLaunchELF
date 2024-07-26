@@ -130,7 +130,7 @@ u64 msTime()
 //---------------------------------------------------------------------------
 int readpad_noKBnoRepeat(void)
 {
-	int port, state;
+	int port;
 
 	WaitSema(semPoll);
 
@@ -225,8 +225,8 @@ int readpad_no_KB(void)
 //---------------------------------------------------------------------------
 int simPadKB(void)
 {
-    int ret, command;
-    char KeyPress;
+	int ret, command;
+	char KeyPress;
 
 	if ((!setting->usbkbd_used) || (!PS2KbdRead(&KeyPress)))
 		return 0;
@@ -358,12 +358,12 @@ int simPadKB(void)
 //---------------------------------------------------------------------------
 int readpad(void)
 {
-    int ret;
+	int ret;
 
-    if ((ret = readpad_no_KB()) && new_pad)
-        return ret;
+	if ((ret = readpad_no_KB()) && new_pad)
+		return ret;
 
-    return simPadKB();
+	return simPadKB();
 }
 //------------------------------
 // endfunc readpad
@@ -374,12 +374,12 @@ int readpad(void)
 //---------------------------------------------------------------------------
 int readpad_noRepeat(void)
 {
-    int ret;
+	int ret;
 
-    if ((ret = readpad_noKBnoRepeat()) && new_pad)
-        return ret;
+	if ((ret = readpad_noKBnoRepeat()) && new_pad)
+		return ret;
 
-    return simPadKB();
+	return simPadKB();
 }
 //------------------------------
 // endfunc readpad_noRepeat
@@ -387,36 +387,36 @@ int readpad_noRepeat(void)
 // Wait for specific PAD, but also accept disconnected state
 void waitPadReady(int port, int slot)
 {
-    int state, lastState;
-    char stateString[16];
+	int state, lastState;
+	char stateString[16];
 
-    state = padGetState(port, slot);
-    lastState = -1;
-    while ((state != PAD_STATE_DISCONN) && (state != PAD_STATE_STABLE) && (state != PAD_STATE_FINDCTP1)) {
-        if (state != lastState)
-            padStateInt2String(state, stateString);
-        lastState = state;
-        state = padGetState(port, slot);
-    }
+	state = padGetState(port, slot);
+	lastState = -1;
+	while ((state != PAD_STATE_DISCONN) && (state != PAD_STATE_STABLE) && (state != PAD_STATE_FINDCTP1)) {
+		if (state != lastState)
+			padStateInt2String(state, stateString);
+		lastState = state;
+		state = padGetState(port, slot);
+	}
 }
 //---------------------------------------------------------------------------
 // Wait for any PAD, but also accept disconnected states
 void waitAnyPadReady(void)
 {
-    int state_1, state_2;
+	int state_1, state_2;
 
-    state_1 = padGetState(0, 0);
-    state_2 = padGetState(1, 0);
-    while ((state_1 != PAD_STATE_DISCONN) && (state_2 != PAD_STATE_DISCONN) && (state_1 != PAD_STATE_STABLE) && (state_2 != PAD_STATE_STABLE) && (state_1 != PAD_STATE_FINDCTP1) && (state_2 != PAD_STATE_FINDCTP1)) {
-        state_1 = padGetState(0, 0);
-        state_2 = padGetState(1, 0);
-    }
+	state_1 = padGetState(0, 0);
+	state_2 = padGetState(1, 0);
+	while ((state_1 != PAD_STATE_DISCONN) && (state_2 != PAD_STATE_DISCONN) && (state_1 != PAD_STATE_STABLE) && (state_2 != PAD_STATE_STABLE) && (state_1 != PAD_STATE_FINDCTP1) && (state_2 != PAD_STATE_FINDCTP1)) {
+		state_1 = padGetState(0, 0);
+		state_2 = padGetState(1, 0);
+	}
 }
 //---------------------------------------------------------------------------
 // setup PAD
 int setupPad(void)
 {
-    int i, port, modes;
+	int ret, i, port, state, modes;
 
 	padInit(0);
 	ds34usb_init();

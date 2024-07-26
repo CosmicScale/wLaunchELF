@@ -155,16 +155,16 @@ ds34bt/ee/libds34bt.a: ds34bt/ee
 ds34bt/iop/ds34bt.irx: ds34bt/iop
 	$(MAKE) -C $<
 
-ds34usb.s: ds34usb/iop/ds34usb.irx
-	@bin2s $< $@ ds34usb_irx
+ds34usb.c: ds34usb/iop/ds34usb.irx
+	$(BIN2C) $< $@ ds34usb_irx
 
-libds34usb.a: ds34usb/ee/libds34usb.a
-	cp $< $@	
+obj/libds34usb.a: ds34usb/ee/libds34usb.a
+	cp $< $@
 
-ds34bt.s: ds34bt/iop/ds34bt.irx
-	@bin2s $< $@ ds34bt_irx
+ds34bt.c: ds34bt/iop/ds34bt.irx
+	$(BIN2C) $< $@ ds34bt_irx
 
-libds34bt.a: ds34bt/ee/libds34bt.a
+obj/libds34bt.a: ds34bt/ee/libds34bt.a
 	cp $< $@
 
 ifeq ($(SMB),1)
@@ -203,6 +203,8 @@ clean:
 	$(MAKE) -C vmc_fs clean
 	$(MAKE) -C AllowDVDV clean
 	$(MAKE) -C oldlibs/ps2ftpd clean
+	$(MAKE) -C ds34usb/ee clean
+	$(MAKE) -C ds34bt/ee clean
 	rm -rf githash.h $(EE_BIN) $(EE_BIN_PKD) $(EE_ASM_DIR) $(EE_OBJS_DIR)
 
 rebuild: clean all
